@@ -37,17 +37,22 @@ function sampleDay(p) {
 }
 
 const root = document.documentElement;
+const skyEl = document.querySelector(".sky");
 let docH = 1, vh = 1;
+let lastSkyKey = "";
 
 function setSky() {
   const p = clamp(scrollY / (docH - vh || 1), 0, 1);
   const s = sampleDay(p);
-  root.style.setProperty("--sun-opacity", s.sun.toFixed(3));
-  root.style.setProperty("--sun-x", s.sunX + "%");
-  root.style.setProperty("--sun-y", s.sunY + "%");
-  root.style.setProperty("--night-veil", s.night.toFixed(3));
-  root.style.setProperty("--stars-opacity", s.stars.toFixed(3));
-  root.style.setProperty("--moon-opacity", s.moon.toFixed(3));
+  const key = [s.sun, s.sunX, s.sunY, s.night, s.stars, s.moon].map((v) => v.toFixed(2)).join(",");
+  if (key === lastSkyKey) return;
+  lastSkyKey = key;
+  skyEl.style.setProperty("--sun-opacity", s.sun.toFixed(3));
+  skyEl.style.setProperty("--sun-x", s.sunX.toFixed(2) + "%");
+  skyEl.style.setProperty("--sun-y", s.sunY.toFixed(2) + "%");
+  skyEl.style.setProperty("--night-veil", s.night.toFixed(3));
+  skyEl.style.setProperty("--stars-opacity", s.stars.toFixed(3));
+  skyEl.style.setProperty("--moon-opacity", s.moon.toFixed(3));
 }
 
 function measure() {
@@ -62,7 +67,7 @@ const dctx = dust.getContext("2d");
 let motes = [];
 
 function initDust() {
-  const n = Math.min(90, Math.floor(innerWidth / 16));
+  const n = Math.min(64, Math.floor(innerWidth / 20));
   motes = Array.from({ length: n }, () => ({
     x: Math.random() * innerWidth,
     y: Math.random() * innerHeight,
@@ -159,14 +164,22 @@ if (!reduced) {
   }, 2600 + Math.random() * 3200);
 }
 
-function tickEyes() {
-  if (!heroCat || reduced) return;
-  eyes.forEach((eye) => {
+/* центры глаз кэшируются, а не считаются каждый кадр */
+let eyeCenters = [];
+function cacheEyeCenters() {
+  if (!heroCat) { eyeCenters = []; return; }
+  eyeCenters = [...eyes].map((eye) => {
     const r = eye.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
-    const dx = clamp((mx - cx) / r.width, -1, 1) * 2.6;
-    const dy = clamp((my - cy) / r.height, -1, 1) * 1.6;
+    return { cx: r.left + r.width / 2, cy: r.top + r.height / 2, w: r.width, h: r.height };
+  });
+}
+
+function tickEyes() {
+  if (!heroCat || reduced || !eyeCenters.length) return;
+  eyes.forEach((eye, i) => {
+    const c = eyeCenters[i];
+    const dx = clamp((mx - c.cx) / c.w, -1, 1) * 2.6;
+    const dy = clamp((my - c.cy) / c.h, -1, 1) * 1.6;
     const pupil = eye.querySelector(".cat__pupil");
     if (pupil) pupil.style.transform = `translate(${dx}px, ${dy}px)`;
   });
@@ -224,10 +237,18 @@ const parallaxEls = [...document.querySelectorAll("[data-parallax]")].map((el) =
   speed: parseFloat(el.dataset.parallax),
 }));
 
-function tickParallax() {
+/* читаем геометрию отдельно от записи — без layout-thrash */
+let parallaxOffsets = [];
+function readParallax() {
+  parallaxOffsets = [];
   for (const { el, speed } of parallaxEls) {
     const r = el.getBoundingClientRect();
-    const offset = (r.top + r.height / 2 - vh / 2) * -speed;
+    if (r.top > vh * 1.3 || r.bottom < -vh * 1.3) continue;
+    parallaxOffsets.push([el, (r.top + r.height / 2 - vh / 2) * -speed]);
+  }
+}
+function writeParallax() {
+  for (const [el, offset] of parallaxOffsets) {
     el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
   }
 }
@@ -324,9 +345,11 @@ function onScroll() {
   if (ticking) return;
   ticking = true;
   requestAnimationFrame(() => {
-    setSky();
+    readParallax();      // чтения
+    cacheEyeCenters();   // чтения
+    setSky();            // записи
+    writeParallax();     // записи
     tickNav();
-    tickParallax();
     ticking = false;
   });
 }
@@ -344,6 +367,7 @@ addEventListener("resize", () => {
   dust.width = innerWidth;
   dust.height = innerHeight;
   initDust();
+  cacheEyeCenters();
 });
 
 /* старт */
@@ -352,6 +376,7 @@ dust.width = innerWidth;
 dust.height = innerHeight;
 initDust();
 setSky();
+cacheEyeCenters();
 loop();
 
 /* печать при перезагрузке */
