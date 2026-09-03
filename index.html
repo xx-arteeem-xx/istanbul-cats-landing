@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KEDİ — Кошки Стамбула</title>
+  <meta name="description" content="Город, которым правят кошки. Почему в Стамбуле их так много, какие породы здесь живут и где встретить легендарных котов." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐈</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+
+  <!-- время суток: слои неба -->
+  <div class="sky" aria-hidden="true">
+    <div class="sky__layer sky__dawn"></div>
+    <div class="sky__layer sky__sunset"></div>
+    <div class="sky__layer sky__night"></div>
+    <div class="sky__stars"></div>
+    <div class="sky__moon"></div>
+    <div class="sky__sun"></div>
+  </div>
+
+  <canvas id="dust" aria-hidden="true"></canvas>
+  <div class="gulls" aria-hidden="true">
+    <svg class="gull" viewBox="0 0 64 24"><path d="M2 18 Q10 4 20 12 Q12 10 8 16 Q20 10 30 12 Q22 8 18 14 M60 18 Q52 4 42 12 Q50 10 54 16 Q42 10 32 12 Q40 8 44 14" /></svg>
+    <svg class="gull" viewBox="0 0 64 24"><path d="M2 18 Q10 4 20 12 Q12 10 8 16 Q20 10 30 12 Q22 8 18 14 M60 18 Q52 4 42 12 Q50 10 54 16 Q42 10 32 12 Q40 8 44 14" /></svg>
+    <svg class="gull" viewBox="0 0 64 24"><path d="M2 18 Q10 4 20 12 Q12 10 8 16 Q20 10 30 12 Q22 8 18 14 M60 18 Q52 4 42 12 Q50 10 54 16 Q42 10 32 12 Q40 8 44 14" /></svg>
+  </div>
+
+  <!-- paw-курсор -->
+  <div class="paw" aria-hidden="true">
+    <svg viewBox="0 0 100 100"><g fill="currentColor"><ellipse cx="50" cy="66" rx="20" ry="18"/><ellipse cx="20" cy="44" rx="9" ry="13" transform="rotate(-18 20 44)"/><ellipse cx="39" cy="30" rx="9" ry="13" transform="rotate(-6 39 30)"/><ellipse cx="61" cy="30" rx="9" ry="13" transform="rotate(6 61 30)"/><ellipse cx="80" cy="44" rx="9" ry="13" transform="rotate(18 80 44)"/></g></svg>
+  </div>
+  <div class="paw-trail" aria-hidden="true"></div>
+
+  <div class="noise" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <a class="nav__logo" href="#top">KEDİ<span>İstanbul</span></a>
+    <ul class="nav__links">
+      <li><a href="#why">Почему много</a></li>
+      <li><a href="#breeds">Породы</a></li>
+      <li><a href="#cult">Культ</a></li>
+      <li><a href="#legends">Легенды</a></li>
+      <li><a href="#places">Маршрут</a></li>
+    </ul>
+    <button class="btn btn--ghost nav__btn" data-meow>miau?</button>
+  </nav>
+
+  <main id="top">
+
+    <!-- ================= HERO ================= -->
+    <header class="hero">
+      <div class="hero__bg" data-parallax="0.18">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Istanbul_City_skyline_at_Sunset.jpg/960px-Istanbul_City_skyline_at_Sunset.jpg" alt="" draggable="false" />
+      </div>
+      <svg class="hero__skyline" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M0 420 V300 H40 V280 H55 V300 H85 V260 H105 V240 H120 V220 H135 V300 H175 V250 H200 V230 H215 V210 H228 V300 H260 V190 L290 150 L320 190 V300 H360 V240 H380 V215 H395 V195 H410 V240 H450 V280 H470 V300 H510 V250 H540 V235 H555 V220 H568 V300 H600 V210 L640 160 L680 210 V300 H720 V260 H745 V300 H775 V230 H800 V210 H815 V190 H828 V230 H860 V270 H880 V300 H920 V240 L950 200 L980 240 V300 H1010 V265 H1030 V300 H1070 V225 H1095 V205 H1110 V190 H1123 V225 H1160 V270 H1185 V300 H1220 V250 H1250 V228 H1265 V215 H1278 V250 H1320 V290 H1345 V300 H1380 V280 H1440 V420 Z"/>
+          <rect x="1285" y="120" width="10" height="180"/>
+          <path d="M1282 120 h16 l-8 -14 Z"/>
+        </g>
+      </svg>
+      <div class="hero__wall" aria-hidden="true"></div>
+      <div class="hero__cat" aria-hidden="true">
+        <svg viewBox="0 0 260 200">
+          <g class="cat">
+            <path class="cat__tail" d="M220 150 Q260 130 252 92 Q248 74 232 80" />
+            <path class="cat__body" d="M60 200 Q30 140 55 96 Q80 52 130 48 Q180 52 205 96 Q230 140 200 200 Z" />
+            <path class="cat__chest" d="M92 200 Q95 150 130 146 Q165 150 168 200 Z" />
+            <g class="cat__head">
+              <path d="M86 84 Q88 28 130 24 Q172 28 174 84 Q160 106 130 108 Q100 106 86 84 Z" />
+              <path d="M86 84 L60 62 L82 54 Z" />
+              <path d="M174 84 L200 62 L178 54 Z" />
+              <path d="M126 82 Q130 88 134 82" class="cat__nose" />
+            </g>
+            <g class="cat__eye cat__eye--l">
+              <path class="cat__lid" d="M100 62 Q110 50 122 60 L122 66 Q110 58 100 66 Z" />
+              <ellipse class="cat__pupil" cx="111" cy="61" rx="3" ry="5" />
+            </g>
+            <g class="cat__eye cat__eye--r">
+              <path class="cat__lid" d="M138 60 Q150 50 160 62 L160 66 Q150 58 138 66 Z" />
+              <ellipse class="cat__pupil" cx="149" cy="61" rx="3" ry="5" />
+            </g>
+            <g class="cat__whisker" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M70 92 L40 88 M70 98 L40 100 M70 104 L44 112" />
+              <path d="M190 92 L220 88 M190 98 L220 100 M190 104 L216 112" />
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="hero__copy">
+        <p class="kicker hero__kicker">İstanbul · город на двух континентах</p>
+        <h1 class="hero__title">
+          <span class="hero__title-ru">КОШКИ<br />СТАМБУЛА</span>
+          <span class="hero__title-tr" aria-hidden="true">KEDİ</span>
+        </h1>
+        <p class="hero__sub">У Стамбула есть тайные правители. Они спят на коврах Гранд-базара, сторожат Айя-Софию и никогда не платят за переправу через Босфор. Их тысячи — и это их город, а не наш.</p>
+        <div class="hero__actions">
+          <a class="btn btn--solid" href="#why" data-magnetic>Спуститься к котам ↓</a>
+          <span class="hero__hint">листай — день сменится ночью</span>
+        </div>
+      </div>
+
+      <div class="hero__bottom" aria-hidden="true">
+        <svg class="waves" viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <path class="waves__w1" d="M0 60 Q180 20 360 60 T720 60 T1080 60 T1440 60 V120 H0 Z" />
+          <path class="waves__w2" d="M0 75 Q180 45 360 75 T720 75 T1080 75 T1440 75 V120 H0 Z" />
+          <path class="waves__w3" d="M0 92 Q180 70 360 92 T720 92 T1080 92 T1440 92 V120 H0 Z" />
+        </svg>
+      </div>
+
+      <div class="hero__scrollhint">
+        <span></span>
+      </div>
+    </header>
+
+    <!-- ================= MARQUEE ================= -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>kedi</span><i>✳</i><span>miyav</span><i>✳</i><span>İstanbul</span><i>✳</i><span>kedi</span><i>✳</i><span>miyav</span><i>✳</i><span>İstanbul</span><i>✳</i>
+        <span>kedi</span><i>✳</i><span>miyav</span><i>✳</i><span>İstanbul</span><i>✳</i><span>kedi</span><i>✳</i><span>miyav</span><i>✳</i><span>İstanbul</span><i>✳</i>
+      </div>
+    </div>
+
+    <!-- ================= WHY ================= -->
+    <section class="section why" id="why">
+      <div class="section__head reveal">
+        <p class="kicker">Глава 01 — Тайная перепись</p>
+        <h2>Почему их<br />так <em>много</em>?</h2>
+        <p class="section__lead">Официально — десятки тысяч. На самом деле — никто не считал. Стамбул строился так, чтобы у кошки всегда были дом, работа и покой.</p>
+      </div>
+
+      <div class="why__grid">
+        <div class="why__photo why__photo--a" data-parallax="0.06">
+          <figure class="arch">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Cat_in_Fatih%2C_Istanbul.jpg/960px-Cat_in_Fatih%2C_Istanbul.jpg" alt="Кот в районе Фатих" loading="lazy" />
+            <figcaption>Фатих, Стамбул</figcaption>
+          </figure>
+        </div>
+
+        <ol class="timeline">
+          <li class="timeline__item reveal">
+            <span class="timeline__num">01</span>
+            <h3>Город-порт, город-амбар</h3>
+            <p>Веками через Стамбул шли корабли с зерном — а вместе с зерном прибывали мыши. Котов нанимали как главную таможенную службу: работа за еду, жильё бесплатно.</p>
+          </li>
+          <li class="timeline__item reveal">
+            <span class="timeline__num">02</span>
+            <h3>Ислам и кошки — особый договор</h3>
+            <p>По легенде, пророк Мухаммед отрезал рукав своего халата, чтобы не будить уснувшего на нём кота. В исламе кошка — чистое животное: ей разрешено входить в мечеть и пить из той же посуды, что и человек.</p>
+          </li>
+          <li class="timeline__item reveal">
+            <span class="timeline__num">03</span>
+            <h3>Деревянный город</h3>
+            <p>Стамбул столетиями был деревянным: дома, рынки, амбары. Рай для грызунов — и единственная рабочая страховка от них: армия уличных котов на довольствии у квартала.</p>
+          </li>
+          <li class="timeline__item reveal">
+            <span class="timeline__num">04</span>
+            <h3>Османские вакфы</h3>
+            <p>Ещё в XVI веке султаны и богачи учреждали благотворительные фонды — вакфы, — которые оплачивали корм и уход за уличными кошками. Это, возможно, первая в мире муниципальная кошачья служба.</p>
+          </li>
+          <li class="timeline__item reveal">
+            <span class="timeline__num">05</span>
+            <h3>Закон №5199</h3>
+            <p>С 2004 года уличные животные защищены законом: их нельзя убивать или отлавливать. Жестокое обращение — уголовное дело. Город обязан кормить, стерилизовать и лечить.</p>
+          </li>
+          <li class="timeline__item reveal">
+            <span class="timeline__num">06</span>
+            <h3>«Кеди», 2016</h3>
+            <p>Документальный фильм о семи стамбульских котах сделал их мировыми звёздами. После него в город поехали туристы, которые смотрят не на мечети, а под ноги.</p>
+          </li>
+        </ol>
+
+        <div class="why__photo why__photo--b" data-parallax="0.09">
+          <figure class="arch arch--wide">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Cat_on_marble_ledge_at_mosque_Istanbul_2026.jpg/960px-Cat_on_marble_ledge_at_mosque_Istanbul_2026.jpg" alt="Кот на мраморном выступе мечети" loading="lazy" />
+            <figcaption>Население мечетей — на самообслуживании</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="counters">
+        <div class="counter reveal">
+          <span class="counter__value" data-count="125000" data-suffix="+">0</span>
+          <span class="counter__label">кошек живёт на улицах<br />(нижняя граница оценки)</span>
+        </div>
+        <div class="counter reveal">
+          <span class="counter__value" data-count="39">0</span>
+          <span class="counter__label">районов города —<br />в каждом своя колония</span>
+        </div>
+        <div class="counter reveal">
+          <span class="counter__value" data-count="2">0</span>
+          <span class="counter__label">континента делят город —<br />кошки не заметили границы</span>
+        </div>
+        <div class="counter reveal">
+          <span class="counter__value" data-count="5199">0</span>
+          <span class="counter__label">статья закона,<br />защищающего котов</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BREEDS ================= -->
+    <section class="section breeds" id="breeds">
+      <div class="section__head reveal">
+        <p class="kicker">Глава 02 — Генеалогия квартала</p>
+        <h2>Кто здесь<br /><em>живёт</em></h2>
+        <p class="section__lead">Породистых — меньшинство, но какие! И всё же настоящий герой Стамбула — беспородный текир, отшлифованный улицей до совершенства.</p>
+      </div>
+
+      <div class="breeds__grid">
+        <article class="card tilt reveal" data-tilt>
+          <div class="card__inner">
+            <div class="card__photo">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Turkish_Angora_in_Ankara_Zoo_%28AO%C3%87%29.JPG/1920px-Turkish_Angora_in_Ankara_Zoo_%28AO%C3%87%29.JPG" alt="Турецкая ангора" loading="lazy" />
+              <span class="card__badge">из Анкары</span>
+            </div>
+            <div class="card__body">
+              <h3>Турецкая ангора</h3>
+              <p class="card__txt">Белоснежная аристократка с голубыми или разноцветными глазами. Национальное достояние: в 1930-х ради спасения породы Ангора объявили кошек зоопарка Анкары частью госпрограммы.</p>
+              <ul class="chips">
+                <li>любит высоту</li>
+                <li>разговорчива</li>
+                <li>гетерохромия — визитка</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="card tilt reveal" data-tilt>
+          <div class="card__inner">
+            <div class="card__photo">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Turkish_Van_cat_transparent_%28cropped%29.png/960px-Turkish_Van_cat_transparent_%28cropped%29.png" alt="Турецкий ван" loading="lazy" />
+              <span class="card__badge">с озера Ван</span>
+            </div>
+            <div class="card__body">
+              <h3>Турецкий ван</h3>
+              <p class="card__txt">Единственная кошка, которая сама идёт в воду. Кашемировая шерсть сохнет за минуты, окрас — только голова и хвост. Пловчиха из восточной Анатолии, в Стамбуле — уважаемая гостья.</p>
+              <ul class="chips">
+                <li>обожает плавать</li>
+                <li>шерсть-кашемир</li>
+                <li>«цветной только хвост»</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="card tilt reveal" data-tilt>
+          <div class="card__inner">
+            <div class="card__photo">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Kad%C4%B1k%C3%B6y_Kedisi_cropped.jpg/960px-Kad%C4%B1k%C3%B6y_Kedisi_cropped.jpg" alt="Стамбульский текир" loading="lazy" />
+              <span class="card__badge">коренной житель</span>
+            </div>
+            <div class="card__body">
+              <h3>Стамбульский текир</h3>
+              <p class="card__txt">Не порода, а генофонд. Полосатый дворовой кот, веками отбиравшийся улицей: умный, дерзкий, несокрушимо спокойный. Каждый — уникальный экземпляр городской эволюции.</p>
+              <ul class="chips">
+                <li>хозяин квартала</li>
+                <li>не боится паромов</li>
+                <li>паспорт не нужен</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= CULT ================= -->
+    <section class="section cult" id="cult">
+      <div class="section__head reveal">
+        <p class="kicker">Глава 03 — Религия города</p>
+        <h2>Культ<br /><em>кошек</em></h2>
+        <p class="section__lead">Здесь кормят котов раньше, чем кормят себя. Это не благотворительность — это часть ритуала.</p>
+      </div>
+
+      <figure class="quote reveal">
+        <blockquote>«Кошки знают, что Бог существует. Поэтому кошки никогда не суетятся. Они знают: всё будет так, как должно быть»</blockquote>
+        <figcaption>— интонация фильма «Кеди» (2016), 7,9 на IMDb</figcaption>
+      </figure>
+
+      <div class="cult__row">
+        <figure class="cult__photo reveal" data-parallax="0.05">
+          <div class="arch arch--tall">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Istanbul_Stray_Cat_Food_Vending_Machine.jpg/960px-Istanbul_Stray_Cat_Food_Vending_Machine.jpg" alt="Автомат с кормом для кошек" loading="lazy" />
+          </div>
+          <figcaption>Уличный автомат: монета → корм</figcaption>
+        </figure>
+        <div class="cult__text">
+          <div class="cult__item reveal">
+            <h3>Автоматы с кормом</h3>
+            <p>На улицах Стамбула стоят вендинговые автоматы: бросаешь монету — вниз сыплется порция корма, а бутылки в пунктах приёма пластика можно обменять на корм для животных. Город буквально построил инфраструктуру кошачьего счастья.</p>
+          </div>
+          <div class="cult__item reveal">
+            <h3>Мечети — открытые двери</h3>
+            <p>Кошка может войти в мечеть, уснуть на ковре или на кафедре — никто не прогонит. В Айя-Софии коты жили веками: сначала в храме, потом в музее, теперь снова в мечети. Они старше любого из нынешних посетителей.</p>
+          </div>
+          <div class="cult__item reveal">
+            <h3>Кошачьи дома</h3>
+            <p>По всему городу — тысячи деревянных домиков с синими дверцами и надписями «kedi evi»: кошачий дом. Жители выносят корм по расписанию, утепляют лежанки на зиму и спорят, чей квартал лучше заботится о своих котах.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= LEGENDS ================= -->
+    <section class="section legends" id="legends">
+      <div class="section__head reveal">
+        <p class="kicker">Глава 04 — Пантеон</p>
+        <h2>Легендарные<br /><em>коты</em></h2>
+        <p class="section__lead">У каждого района — свой святой. Троим поставили памятники, одному — страницу в Википедии, а тысячи — просто живут.</p>
+      </div>
+
+      <div class="legends__grid">
+        <article class="legend reveal">
+          <div class="legend__frame">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Tombili_the_cat_n2.jpg/960px-Tombili_the_cat_n2.jpg" alt="Кот Tombili" loading="lazy" />
+            <div class="legend__glow"></div>
+          </div>
+          <div class="legend__body">
+            <h3>Tombili</h3>
+            <p class="legend__sub">(Томби́ли · «пухляш»)</p>
+            <p>Толстый кот из Кадыкёя, прославившийся позой «облокотился на бордюр, как уставший мужик». Когда он умер в 2016 году, в интернете собрали тысячи подписей — и в районе поставили бронзовый памятник его позе. 1 августа — день памяти Томбили.</p>
+          </div>
+        </article>
+
+        <article class="legend legend--big reveal">
+          <div class="legend__frame">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Ayasofya_Gli_cat.jpg/960px-Ayasofya_Gli_cat.jpg" alt="Кошка Gli" loading="lazy" />
+            <div class="legend__glow"></div>
+          </div>
+          <div class="legend__body">
+            <h3>Gli</h3>
+            <p class="legend__sub">(Гли́ · «хранительница Айя-Софии»)</p>
+            <p>Родилась в Айя-Софии в 2004 году и прожила в храме всю жизнь. Встречала папу римского и Обаму, имела 100 000 подписчиков, а после смерти в 2020-м была похоронена в саду мечети — честь, которой удостоились не все люди.</p>
+          </div>
+        </article>
+
+        <article class="legend reveal">
+          <div class="legend__frame">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Kad%C4%B1k%C3%B6y_Kedisi.jpg/1920px-Kad%C4%B1k%C3%B6y_Kedisi.jpg" alt="Кот пристани Кадыкёя" loading="lazy" />
+            <div class="legend__glow"></div>
+          </div>
+          <div class="legend__body">
+            <h3>Банда пристани</h3>
+            <p class="legend__sub">(Кадыкёй · с 1930-х)</p>
+            <p>Бессмертный коллективный герой: коты набережной Кадыкёя. Встречают паромы, знают расписание, выпрашивают рыбу у рыбаков и уступают скамейки только симпатичным туристам. Власть здесь передаётся по наследству — от кота к коту.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= PLACES ================= -->
+    <section class="section places" id="places">
+      <div class="section__head reveal">
+        <p class="kicker">Глава 05 — Карта мурлыканья</p>
+        <h2>Где их<br /><em>встретить</em></h2>
+        <p class="section__lead">Кошку в Стамбуле можно не искать — она сама тебя найдёт. Но если нужна гарантия, вот шесть мест с максимальной плотностью пушистой власти. Листай вбок →</p>
+      </div>
+
+      <div class="places__strip" data-strip>
+        <article class="place">
+          <div class="place__img">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Feneryolunda_Kediler%2C_Kad%C4%B1k%C3%B6y_01.jpg/960px-Feneryolunda_Kediler%2C_Kad%C4%B1k%C3%B6y_01.jpg" alt="Коты в Кадыкёе" loading="eager" />
+            <span class="place__idx">01</span>
+          </div>
+          <div class="place__body">
+            <h3>Кадыкёй</h3>
+            <p>Азиатская столица кошачьего Стамбула. Паромы, рыбаки, памятник Томбили и коты на каждой витрине.</p>
+          </div>
+        </article>
+        <article class="place">
+          <div class="place__img">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Cat_sits_in_the_doorway_of_an_antique_shop_in_Cihanghir%2C_Istanbul.jpg/960px-Cat_sits_in_the_doorway_of_an_antique_shop_in_Cihanghir%2C_Istanbul.jpg" alt="Кот в антикварной лавке, Чихангир" loading="eager" />
+            <span class="place__idx">02</span>
+          </div>
+          <div class="place__body">
+            <h3>Чихангир</h3>
+            <p>Богемный квартал художников и писателей — и их котов-антикваров, сидящих в дверях лавок.</p>
+          </div>
+        </article>
+        <article class="place">
+          <div class="place__img">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Cat_at_Ayasofya.jpg/960px-Cat_at_Ayasofya.jpg" alt="Кот у Айя-Софии" loading="eager" />
+            <span class="place__idx">03</span>
+          </div>
+          <div class="place__body">
+            <h3>Султанахмет</h3>
+            <p>Айя-София и Голубая мечеть: коты — полноправные прихожане, встречающие паломников на ступенях.</p>
+          </div>
+        </article>
+        <article class="place">
+          <div class="place__img">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Cat_on_Turkish_Carpets_Grand_Bazaar_Istanbul_2026.jpg/1280px-Cat_on_Turkish_Carpets_Grand_Bazaar_Istanbul_2026.jpg" alt="Кот на коврах Гранд-базара" loading="eager" />
+            <span class="place__idx">04</span>
+          </div>
+          <div class="place__body">
+            <h3>Гранд-базар</h3>
+            <p>Хранители ковров и специй: тут кошки работают охранниками уже пять столетий — смена так и не пришла.</p>
+          </div>
+        </article>
+        <article class="place">
+          <div class="place__img">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Streundende_Katze_Istanbul_Balat.jpg/960px-Streundende_Katze_Istanbul_Balat.jpg" alt="Кот в Балате" loading="eager" />
+            <span class="place__idx">05</span>
+          </div>
+          <div class="place__body">
+            <h3>Балат</h3>
+            <p>Разноцветные улочки и рыжие коты, позирующие лучше профессиональных моделей.</p>
+          </div>
+        </article>
+        <article class="place">
+          <div class="place__img">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Feral_cats_in_Fenerbah%C3%A7e_Park_01.jpg/960px-Feral_cats_in_Fenerbah%C3%A7e_Park_01.jpg" alt="Дикие кошки в парке Фенербахче" loading="eager" />
+            <span class="place__idx">06</span>
+          </div>
+          <div class="place__body">
+            <h3>Парк Фенербахче</h3>
+            <p>Дикая колония на берегу Мраморного моря: здесь кошки живут кланами и правят парком без аренды.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= FINALE / FOOTER ================= -->
+    <footer class="finale" id="finale">
+      <div class="finale__cat" aria-hidden="true">
+        <svg viewBox="0 0 260 200">
+          <g class="cat cat--walk">
+            <path class="cat__tail" d="M220 150 Q260 130 252 92 Q248 74 232 80" />
+            <path class="cat__body" d="M60 200 Q30 140 55 96 Q80 52 130 48 Q180 52 205 96 Q230 140 200 200 Z" />
+            <path class="cat__chest" d="M92 200 Q95 150 130 146 Q165 150 168 200 Z" />
+            <g class="cat__head">
+              <path d="M86 84 Q88 28 130 24 Q172 28 174 84 Q160 106 130 108 Q100 106 86 84 Z" />
+              <path d="M86 84 L60 62 L82 54 Z" />
+              <path d="M174 84 L200 62 L178 54 Z" />
+              <path d="M126 82 Q130 88 134 82" class="cat__nose" />
+            </g>
+            <g class="cat__eye">
+              <path class="cat__lid" d="M100 62 Q110 50 122 60 L122 66 Q110 58 100 66 Z" />
+              <ellipse class="cat__pupil" cx="111" cy="61" rx="3" ry="5" />
+            </g>
+            <g class="cat__eye">
+              <path class="cat__lid" d="M138 60 Q150 50 160 62 L160 66 Q150 58 138 66 Z" />
+              <ellipse class="cat__pupil" cx="149" cy="61" rx="3" ry="5" />
+            </g>
+          </g>
+        </svg>
+      </div>
+      <h2 class="finale__title reveal">İstanbul kedi̇leri̇ndi̇r.</h2>
+      <p class="finale__sub reveal">«Стамбул принадлежит кошкам». Мы здесь в гостях — веди себя прилично.</p>
+      <button class="btn btn--solid finale__meow reveal" data-meow>Сказать «miyav» ↑</button>
+      <div class="finale__meta reveal">
+        <p>Сделано с любовью и мурлыканьем. Фото: Wikimedia Commons (CC BY-SA / свободные лицензии).</p>
+        <p class="finale__tiny">kedi · miyav · İstanbul · кedi · miyav · İstanbul</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
