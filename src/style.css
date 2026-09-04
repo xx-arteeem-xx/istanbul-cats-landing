@@ -68,17 +68,24 @@ a { color: inherit; text-decoration: none; }
 .sky__sunset { background: radial-gradient(130% 100% at 72% 92%, #ffd28a 0%, #ff8b3d 24%, #c93d52 46%, #4a2354 74%, #1c1033 100%); opacity: var(--sun-opacity); }
 .sky__night  { background: radial-gradient(120% 90% at 50% 0%, #0b0e2a 0%, #0d1230 45%, #05060f 100%); opacity: var(--night-veil); }
 
+/* приглушает низ неба, где заходит солнце — чтобы текст оставался читаемым */
+.sky__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 34%, rgba(13, 9, 32, 0.22) 62%, rgba(13, 9, 32, 0.4) 100%);
+}
+
 .sky__sun {
   position: absolute;
   left: var(--sun-x);
   top: var(--sun-y);
-  width: 34vmin;
-  height: 34vmin;
+  width: 28vmin;
+  height: 28vmin;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(circle at 40% 40%, #fff3c4 0%, #ffd28a 40%, #ff9a3c 72%, rgba(255, 120, 60, 0) 100%);
+  background: radial-gradient(circle at 40% 40%, #ffe9c4 0%, #ffd28a 40%, #ff9a3c 72%, rgba(255, 120, 60, 0) 100%);
   opacity: var(--sun-opacity);
-  box-shadow: 0 0 8vmin 3vmin rgba(255, 160, 80, 0.25);
+  box-shadow: 0 0 7vmin 2vmin rgba(255, 150, 70, 0.22);
 }
 .sky__moon {
   position: absolute;
@@ -311,7 +318,7 @@ a { color: inherit; text-decoration: none; }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(18, 13, 46, 0.25) 0%, rgba(18, 13, 46, 0.05) 40%, rgba(18, 13, 46, 0.55) 82%, var(--deep) 100%);
+  background: linear-gradient(180deg, rgba(18, 13, 46, 0.3) 0%, rgba(18, 13, 46, 0.14) 40%, rgba(18, 13, 46, 0.6) 82%, var(--deep) 100%);
 }
 .hero__bg img { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.15) contrast(1.05); }
 
@@ -344,11 +351,10 @@ a { color: inherit; text-decoration: none; }
 /* кот */
 .hero__cat {
   position: absolute;
-  left: 10%;
-  bottom: 17.5%;
+  right: 7%;
+  bottom: 16%;
   width: clamp(150px, 17vw, 240px);
   z-index: 2;
-  color: #1a1033;
   animation: cat-sit 1.4s var(--ease-out) both;
 }
 .hero__cat svg { width: 100%; display: block; overflow: visible; }
@@ -356,33 +362,49 @@ a { color: inherit; text-decoration: none; }
   from { transform: translateY(80px) scale(0.7); opacity: 0; }
   to { transform: translateY(0) scale(1); opacity: 1; }
 }
+.cat__shadow { fill: rgba(10, 7, 26, 0.55); filter: blur(4px); }
+.cat__body,
+.cat__headbase,
+.cat__ear,
+.cat__paw { fill: url(#catBody); }
+.cat__chest { fill: rgba(255, 224, 190, 0.1); }
 .cat__tail {
   fill: none;
-  stroke: currentColor;
-  stroke-width: 20;
+  stroke: url(#catBody);
+  stroke-width: 15;
   stroke-linecap: round;
-  transform-origin: 225px 145px;
+  transform-origin: 192px 158px;
   animation: tail-sway 3.2s ease-in-out infinite;
 }
 @keyframes tail-sway {
   0%, 100% { transform: rotate(0deg); }
-  30% { transform: rotate(9deg); }
-  60% { transform: rotate(-6deg); }
+  30% { transform: rotate(7deg); }
+  60% { transform: rotate(-5deg); }
+}
+.cat__rim {
+  fill: none;
+  stroke: url(#catRim);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 6px rgba(255, 150, 70, 0.45));
 }
 .cat__eye { transform-box: fill-box; transform-origin: center; }
-.cat__pupil { fill: #ffe9d2; animation: pupil 5s ease-in-out infinite; }
-@keyframes pupil {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(-2px, 1px); }
-  50% { transform: translate(2px, 0); }
-  75% { transform: translate(-1px, -1px); }
+.cat__lid { fill: url(#catEye); transform-box: fill-box; transform-origin: center; }
+.cat__pupil { fill: #2a1540; }
+.cat__nose { fill: #ff8a4c; }
+.cat__mouth {
+  fill: none;
+  stroke: rgba(255, 214, 138, 0.55);
+  stroke-width: 1.6;
+  stroke-linecap: round;
 }
+.cat__whisker { fill: none; stroke: rgba(255, 214, 138, 0.45); stroke-width: 1.8; stroke-linecap: round; }
 .hero__cat.is-blinking .cat__lid { animation: blink 0.28s ease-in-out; }
 @keyframes blink {
   0%, 100% { transform: scaleY(1); }
   50% { transform: scaleY(0.06); }
 }
-.cat__lid { transform-box: fill-box; transform-origin: center; }
 
 /* копирайт-блок */
 .hero__copy {
@@ -527,6 +549,27 @@ a { color: inherit; text-decoration: none; }
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
+}
+
+/* ---------- ЧИТАЕМОСТЬ НА ФОНЕ НЕБА ---------- */
+/* тёмное гало вокруг букв: невидимо на тёмном небе и спасает текст,
+   когда закатное солнце проходит за строками */
+:root { --halo: 0 1px 2px rgba(13, 9, 32, 0.65), 0 2px 10px rgba(13, 9, 32, 0.5), 0 4px 26px rgba(13, 9, 32, 0.42); }
+
+.section__head h2,
+.section__lead,
+.kicker,
+.timeline__num,
+.timeline__item h3,
+.timeline__item p,
+.quote blockquote,
+.quote figcaption,
+.cult__item h3,
+.cult__item p,
+.cult__photo figcaption,
+.hero__title-ru,
+.hero__sub {
+  text-shadow: var(--halo);
 }
 
 /* ---------- ОБЩИЕ СЕКЦИИ ---------- */
@@ -1003,20 +1046,53 @@ a { color: inherit; text-decoration: none; }
 .finale__cat {
   position: absolute;
   left: 50%;
-  bottom: 26%;
-  width: clamp(140px, 15vw, 210px);
+  bottom: 22%;
+  width: clamp(150px, 16vw, 220px);
   transform: translateX(-50%);
-  color: rgba(255, 179, 92, 0.16);
-  animation: cat-walk 14s ease-in-out infinite;
+  color: rgba(255, 179, 92, 0.2);
+  animation: cat-walk 18s linear infinite;
+}
+.finale__cat svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  animation: walk-bob 0.7s ease-in-out infinite alternate;
+}
+.walk-cat__body,
+.walk-cat__headbase,
+.walk-cat__ear,
+.walk-cat__nose { fill: currentColor; }
+.walk-cat__leg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 11;
+  stroke-linecap: round;
+}
+.walk-cat__tail {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transform-box: view-box;
+  transform-origin: 56px 84px;
+  animation: walk-tail 1.4s ease-in-out infinite alternate;
+}
+@keyframes walk-bob {
+  from { transform: translateY(2px) rotate(-1.4deg); }
+  to { transform: translateY(-4px) rotate(1.4deg); }
+}
+@keyframes walk-tail {
+  from { transform: rotate(-10deg); }
+  to { transform: rotate(9deg); }
 }
 @keyframes cat-walk {
-  0% { transform: translateX(-160%) scaleX(1); }
-  24% { transform: translateX(-50%) scaleX(1); }
-  26% { transform: translateX(-50%) scaleX(-1); }
-  50% { transform: translateX(140%) scaleX(-1); }
-  100% { transform: translateX(140%) scaleX(-1); }
+  0%   { transform: translateX(-58vw); opacity: 0; }
+  5%   { opacity: 1; }
+  55%  { transform: translateX(58vw); opacity: 1; }
+  60%  { opacity: 0; }
+  61%  { transform: translateX(-58vw); }
+  100% { transform: translateX(-58vw); opacity: 0; }
 }
-.finale__cat .cat__tail { animation: none; }
 .finale__title {
   font-family: var(--font-display);
   font-weight: 800;
@@ -1088,7 +1164,7 @@ a { color: inherit; text-decoration: none; }
   .cult__row { grid-template-columns: 1fr; }
   .counters { grid-template-columns: repeat(2, 1fr); }
   .hero__wall { display: none; }
-  .hero__cat { left: 4%; bottom: 16%; }
+  .hero__cat { right: 4%; bottom: 9%; width: 140px; }
 }
 @media (max-width: 620px) {
   .counters { grid-template-columns: 1fr 1fr; gap: 12px; }

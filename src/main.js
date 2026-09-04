@@ -9,11 +9,11 @@ const isTouch = matchMedia("(pointer: coarse)").matches;
 /* ============ ВРЕМЯ СУТОК ПО СКРОЛЛУ ============ */
 /* ключевые кадры дня: [позиция, sunOpacity, sunX, sunY, nightVeil, stars, moon] */
 const DAY_STOPS = [
-  { p: 0.0,  sun: 0.4,  sunX: 64, sunY: 70, night: 0,   stars: 0,   moon: 0 },
-  { p: 0.12, sun: 0.95, sunX: 56, sunY: 46, night: 0,   stars: 0,   moon: 0 },
-  { p: 0.34, sun: 1,    sunX: 44, sunY: 40, night: 0,   stars: 0,   moon: 0 },
-  { p: 0.52, sun: 0.85, sunX: 32, sunY: 52, night: 0,   stars: 0,   moon: 0 },
-  { p: 0.68, sun: 0.35, sunX: 24, sunY: 78, night: 0.55, stars: 0.25, moon: 0.35 },
+  { p: 0.0,  sun: 0.38, sunX: 64, sunY: 70, night: 0,   stars: 0,   moon: 0 },
+  { p: 0.12, sun: 0.88, sunX: 56, sunY: 46, night: 0,   stars: 0,   moon: 0 },
+  { p: 0.34, sun: 0.92, sunX: 44, sunY: 40, night: 0,   stars: 0,   moon: 0 },
+  { p: 0.52, sun: 0.8,  sunX: 32, sunY: 52, night: 0,   stars: 0,   moon: 0 },
+  { p: 0.68, sun: 0.34, sunX: 24, sunY: 78, night: 0.55, stars: 0.25, moon: 0.35 },
   { p: 0.85, sun: 0,    sunX: 20, sunY: 96, night: 0.9,  stars: 0.7,  moon: 0.85 },
   { p: 1.0,  sun: 0,    sunX: 18, sunY: 100, night: 1,   stars: 1,    moon: 1 },
 ];
@@ -44,6 +44,15 @@ let lastSkyKey = "";
 function setSky() {
   const p = clamp(scrollY / (docH - vh || 1), 0, 1);
   const s = sampleDay(p);
+  /* солнце проходит за текстовой колонкой — приглушаем его, как лёгкую дымку,
+     чтобы буквы оставались читаемыми */
+  const glare =
+    1 -
+    0.5 *
+      clamp((60 - s.sunX) / 8, 0, 1) *
+      clamp((s.sunY - 25) / 12, 0, 1) *
+      clamp((88 - s.sunY) / 16, 0, 1);
+  s.sun *= glare;
   const key = [s.sun, s.sunX, s.sunY, s.night, s.stars, s.moon].map((v) => v.toFixed(2)).join(",");
   if (key === lastSkyKey) return;
   lastSkyKey = key;
