@@ -13,6 +13,30 @@
 </head>
 <body>
 
+  <!-- спрайт иконок -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-paw" viewBox="0 0 100 100">
+      <path fill="currentColor" d="M50 84 C 34 84, 23 74, 23 61 C 23 48, 35 42, 50 42 C 65 42, 77 48, 77 61 C 77 74, 66 84, 50 84 Z"/>
+      <ellipse fill="currentColor" cx="19" cy="47" rx="8.5" ry="12" transform="rotate(-22 19 47)"/>
+      <ellipse fill="currentColor" cx="38" cy="30" rx="8.5" ry="12" transform="rotate(-8 38 30)"/>
+      <ellipse fill="currentColor" cx="62" cy="30" rx="8.5" ry="12" transform="rotate(8 62 30)"/>
+      <ellipse fill="currentColor" cx="81" cy="47" rx="8.5" ry="12" transform="rotate(22 81 47)"/>
+    </symbol>
+    <symbol id="i-gull" viewBox="0 0 64 28">
+      <path d="M2 24 C 13 6, 26 7, 32 16 C 38 7, 51 6, 62 24"/>
+    </symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2 14.2 9.8 22 12 14.2 14.2 12 22 9.8 14.2 2 12 9.8 9.8 Z"/>
+    </symbol>
+    <symbol id="i-star8" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2 14.2 9.8 22 12 14.2 14.2 12 22 9.8 14.2 2 12 9.8 9.8 Z"/>
+      <path fill="currentColor" d="M12 2 14.2 9.8 22 12 14.2 14.2 12 22 9.8 14.2 2 12 9.8 9.8 Z" transform="rotate(45 12 12)"/>
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24">
+      <path d="M12 4v15M5.5 12.5 12 19l6.5-6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </svg>
+
   <!-- время суток: слои неба -->
   <div class="sky" aria-hidden="true">
     <div class="sky__layer sky__dawn"></div>
@@ -26,14 +50,14 @@
 
   <canvas id="dust" aria-hidden="true"></canvas>
   <div class="gulls" aria-hidden="true">
-    <svg class="gull" viewBox="0 0 64 24"><path d="M2 18 Q10 4 20 12 Q12 10 8 16 Q20 10 30 12 Q22 8 18 14 M60 18 Q52 4 42 12 Q50 10 54 16 Q42 10 32 12 Q40 8 44 14" /></svg>
-    <svg class="gull" viewBox="0 0 64 24"><path d="M2 18 Q10 4 20 12 Q12 10 8 16 Q20 10 30 12 Q22 8 18 14 M60 18 Q52 4 42 12 Q50 10 54 16 Q42 10 32 12 Q40 8 44 14" /></svg>
-    <svg class="gull" viewBox="0 0 64 24"><path d="M2 18 Q10 4 20 12 Q12 10 8 16 Q20 10 30 12 Q22 8 18 14 M60 18 Q52 4 42 12 Q50 10 54 16 Q42 10 32 12 Q40 8 44 14" /></svg>
+    <svg class="gull" viewBox="0 0 64 28"><use href="#i-gull"/></svg>
+    <svg class="gull" viewBox="0 0 64 28"><use href="#i-gull"/></svg>
+    <svg class="gull" viewBox="0 0 64 28"><use href="#i-gull"/></svg>
   </div>
 
   <!-- paw-курсор -->
   <div class="paw" aria-hidden="true">
-    <svg viewBox="0 0 100 100"><g fill="currentColor"><ellipse cx="50" cy="66" rx="20" ry="18"/><ellipse cx="20" cy="44" rx="9" ry="13" transform="rotate(-18 20 44)"/><ellipse cx="39" cy="30" rx="9" ry="13" transform="rotate(-6 39 30)"/><ellipse cx="61" cy="30" rx="9" ry="13" transform="rotate(6 61 30)"/><ellipse cx="80" cy="44" rx="9" ry="13" transform="rotate(18 80 44)"/></g></svg>
+    <svg viewBox="0 0 100 100"><use href="#i-paw"/></svg>
   </div>
   <div class="paw-trail" aria-hidden="true"></div>
 
@@ -65,9 +89,22 @@
           <path d="M1282 120 h16 l-8 -14 Z"/>
         </g>
       </svg>
-      <div class="hero__wall" aria-hidden="true"></div>
+      <div class="hero__arch" aria-hidden="true">
+        <svg viewBox="0 0 220 300">
+          <path d="M30 300 V150 Q30 60 110 44 Q190 60 190 150 V300" />
+          <path d="M52 300 V156 Q52 80 110 66 Q168 80 168 156 V300" />
+          <path d="M110 300 V120" stroke-dasharray="2 10" />
+        </svg>
+      </div>
+      <div class="hero__crescent" aria-hidden="true">
+        <svg viewBox="0 0 100 100"><path d="M81.3 22 A42 42 0 1 0 81.3 78 A34 34 0 1 1 81.3 22 Z"/></svg>
+      </div>
+      <svg class="hero__spark hero__spark--1" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-spark"/></svg>
+      <svg class="hero__spark hero__spark--2" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-spark"/></svg>
+
+      <!-- кот -->
       <div class="hero__cat" aria-hidden="true">
-        <svg viewBox="0 0 260 200">
+        <svg viewBox="0 0 260 220">
           <defs>
             <linearGradient id="catBody" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stop-color="#4b2a5f"/>
@@ -83,45 +120,51 @@
             </linearGradient>
           </defs>
           <g class="cat">
-            <ellipse class="cat__shadow" cx="130" cy="194" rx="86" ry="8"/>
-            <path class="cat__tail" d="M192 158 Q238 148 240 106 Q241 84 210 84"/>
-            <path class="cat__body" d="M56 198 Q48 136 82 104 Q102 82 130 80 Q158 82 178 104 Q212 136 204 198 Z"/>
-            <path class="cat__chest" d="M102 198 Q98 154 120 144 Q130 140 140 144 Q162 154 158 198 Z"/>
-            <path class="cat__paw cat__paw--l" d="M99 198 L99 174 Q99 166 107 166 L117 166 Q125 166 125 174 L125 198 Z"/>
-            <path class="cat__paw cat__paw--r" d="M135 198 L135 174 Q135 166 143 166 L153 166 Q161 166 161 174 L161 198 Z"/>
-            <g class="cat__head">
-              <path class="cat__headbase" d="M96 116 Q92 62 118 50 Q126 45 130 45 Q134 45 142 50 Q168 62 164 116 Q160 130 130 132 Q100 130 96 116 Z"/>
-              <path class="cat__ear cat__ear--l" d="M99 72 L76 24 L120 44 Z"/>
-              <path class="cat__ear cat__ear--r" d="M161 72 L184 24 L140 44 Z"/>
+            <ellipse class="cat__shadow" cx="130" cy="212" rx="82" ry="7"/>
+            <path class="cat__tail" d="M182 190 C 216 196, 238 180, 238 156 C 238 140, 226 132, 214 138"/>
+            <path class="cat__body" d="M130 210 C 98 210, 78 195, 71 167 C 64 139, 71 111, 89 97 C 97 90, 106 84, 116 81 L 144 81 C 154 84, 163 90, 171 97 C 189 111, 196 139, 189 167 C 182 195, 162 210, 130 210 Z"/>
+            <path class="cat__chest" d="M106 100 Q130 112 154 100 Q152 150 130 162 Q108 150 106 100 Z"/>
+            <path class="cat__paw cat__paw--l" d="M98 210 v-15 q0 -10 10 -10 h8 q10 0 10 10 v15 Z"/>
+            <path class="cat__paw cat__paw--r" d="M134 210 v-15 q0 -10 10 -10 h8 q10 0 10 10 v15 Z"/>
+            <g class="cat__toes">
+              <path d="M108 200 v10 M117 200 v10 M144 200 v10 M153 200 v10"/>
             </g>
-            <path class="cat__rim" d="M184 24 L161 72 Q168 92 164 116 Q161 129 176 137 Q212 172 206 196"/>
+            <g class="cat__head">
+              <path class="cat__ear cat__ear--l" d="M100 50 Q93 24 103 10 Q117 19 123 35 Z"/>
+              <path class="cat__ear cat__ear--r" d="M160 50 Q167 24 157 10 Q143 19 137 35 Z"/>
+              <path class="cat__earin cat__earin--l" d="M105 41 Q101 26 107 16 Q115 24 119 34 Q112 38 105 41 Z"/>
+              <path class="cat__earin cat__earin--r" d="M155 41 Q159 26 153 16 Q145 24 141 34 Q148 38 155 41 Z"/>
+              <path class="cat__headbase" d="M130 30 C 106 30, 93 42, 90 62 C 88 75, 92 85, 101 91 C 110 97, 119 100, 130 100 C 141 100, 150 97, 159 91 C 168 85, 172 75, 170 62 C 167 42, 154 30, 130 30 Z"/>
+              <path class="cat__muzzle" d="M116 74 Q130 68 144 74 Q142 90 130 93 Q118 90 116 74 Z"/>
+            </g>
+            <path class="cat__rim" d="M157 10 Q167 24 161 41 Q170 48 170 62 Q172 79 158 90 Q175 99 184 113 Q196 139 191 167 Q187 193 166 203"/>
             <g class="cat__eye cat__eye--l">
-              <path class="cat__lid" d="M101 79 Q111 67 121 79 Q111 86 101 79 Z"/>
-              <ellipse class="cat__pupil" cx="111" cy="79" rx="2.7" ry="4.6"/>
+              <path class="cat__lid" d="M101 62 Q112 53 123 62 Q112 70 101 62 Z"/>
+              <ellipse class="cat__pupil" cx="112" cy="62" rx="2.6" ry="5.6"/>
             </g>
             <g class="cat__eye cat__eye--r">
-              <path class="cat__lid" d="M139 79 Q149 67 159 79 Q149 86 139 79 Z"/>
-              <ellipse class="cat__pupil" cx="149" cy="79" rx="2.7" ry="4.6"/>
+              <path class="cat__lid" d="M137 62 Q148 53 159 62 Q148 70 137 62 Z"/>
+              <ellipse class="cat__pupil" cx="148" cy="62" rx="2.6" ry="5.6"/>
             </g>
-            <path class="cat__nose" d="M126 91 L134 91 L130 97 Z"/>
-            <path class="cat__mouth" d="M130 97 Q124 104 116 102 M130 97 Q136 104 144 102"/>
+            <path class="cat__nose" d="M125 73 h10 l-5 7 Z"/>
+            <path class="cat__mouth" d="M130 80 Q126 86 120 84 M130 80 Q134 86 140 84"/>
             <g class="cat__whisker">
-              <path d="M102 100 L62 93 M102 108 L62 108 M104 116 L68 124"/>
-              <path d="M158 100 L198 93 M158 108 L198 108 M156 116 L192 124"/>
+              <path d="M99 75 L63 69 M98 81 L60 81 M100 87 L66 93"/>
+              <path d="M161 75 L197 69 M162 81 L200 81 M160 87 L194 93"/>
             </g>
           </g>
         </svg>
       </div>
 
       <div class="hero__copy">
-        <p class="kicker hero__kicker">İstanbul · город на двух континентах</p>
+        <p class="kicker hero__kicker"><svg class="kicker__ico" viewBox="0 0 24 24"><use href="#i-spark"/></svg>İstanbul · город на двух континентах</p>
         <h1 class="hero__title">
           <span class="hero__title-ru">КОШКИ<br />СТАМБУЛА</span>
           <span class="hero__title-tr" aria-hidden="true">KEDİ</span>
         </h1>
         <p class="hero__sub">У Стамбула есть тайные правители. Они спят на коврах Гранд-базара, сторожат Айя-Софию и никогда не платят за переправу через Босфор. Их тысячи — и это их город, а не наш.</p>
         <div class="hero__actions">
-          <a class="btn btn--solid" href="#why" data-magnetic>Спуститься к котам ↓</a>
+          <a class="btn btn--solid" href="#why" data-magnetic>Спуститься к котам <svg class="btn__ico" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></a>
           <span class="hero__hint">листай — день сменится ночью</span>
         </div>
       </div>
@@ -142,15 +185,15 @@
     <!-- ================= MARQUEE ================= -->
     <div class="marquee" aria-hidden="true">
       <div class="marquee__track">
-        <span>kedi</span><i>✳</i><span>miyav</span><i>✳</i><span>İstanbul</span><i>✳</i><span>kedi</span><i>✳</i><span>miyav</span><i>✳</i><span>İstanbul</span><i>✳</i>
-        <span>kedi</span><i>✳</i><span>miyav</span><i>✳</i><span>İstanbul</span><i>✳</i><span>kedi</span><i>✳</i><span>miyav</span><i>✳</i><span>İstanbul</span><i>✳</i>
+        <span>kedi</span><svg class="mq-ico mq-ico--star" viewBox="0 0 24 24"><use href="#i-star8"/></svg><span>miyav</span><svg class="mq-ico mq-ico--paw" viewBox="0 0 24 24"><use href="#i-paw"/></svg><span>İstanbul</span><svg class="mq-ico mq-ico--star" viewBox="0 0 24 24"><use href="#i-star8"/></svg><span>kedi</span><svg class="mq-ico mq-ico--paw" viewBox="0 0 24 24"><use href="#i-paw"/></svg><span>miyav</span><svg class="mq-ico mq-ico--star" viewBox="0 0 24 24"><use href="#i-star8"/></svg><span>İstanbul</span><svg class="mq-ico mq-ico--paw" viewBox="0 0 24 24"><use href="#i-paw"/></svg>
+        <span>kedi</span><svg class="mq-ico mq-ico--star" viewBox="0 0 24 24"><use href="#i-star8"/></svg><span>miyav</span><svg class="mq-ico mq-ico--paw" viewBox="0 0 24 24"><use href="#i-paw"/></svg><span>İstanbul</span><svg class="mq-ico mq-ico--star" viewBox="0 0 24 24"><use href="#i-star8"/></svg><span>kedi</span><svg class="mq-ico mq-ico--paw" viewBox="0 0 24 24"><use href="#i-paw"/></svg><span>miyav</span><svg class="mq-ico mq-ico--star" viewBox="0 0 24 24"><use href="#i-star8"/></svg><span>İstanbul</span><svg class="mq-ico mq-ico--paw" viewBox="0 0 24 24"><use href="#i-paw"/></svg>
       </div>
     </div>
 
     <!-- ================= WHY ================= -->
     <section class="section why" id="why">
       <div class="section__head reveal">
-        <p class="kicker">Глава 01 — Тайная перепись</p>
+        <p class="kicker"><svg class="kicker__ico" viewBox="0 0 24 24"><use href="#i-spark"/></svg>Глава 01 — Тайная перепись</p>
         <h2>Почему их<br />так <em>много</em>?</h2>
         <p class="section__lead">Официально — десятки тысяч. На самом деле — никто не считал. Стамбул строился так, чтобы у кошки всегда были дом, работа и покой.</p>
       </div>
@@ -206,20 +249,24 @@
 
       <div class="counters">
         <div class="counter reveal">
+          <span class="counter__idx">01</span>
           <span class="counter__value" data-count="125000" data-suffix="+">0</span>
-          <span class="counter__label">кошек живёт на улицах<br />(нижняя граница оценки)</span>
+          <span class="counter__label">кошек живёт на улицах — это лишь нижняя граница оценки</span>
         </div>
         <div class="counter reveal">
+          <span class="counter__idx">02</span>
           <span class="counter__value" data-count="39">0</span>
-          <span class="counter__label">районов города —<br />в каждом своя колония</span>
+          <span class="counter__label">районов города — и в каждом своя кошачья колония</span>
         </div>
         <div class="counter reveal">
+          <span class="counter__idx">03</span>
           <span class="counter__value" data-count="2">0</span>
-          <span class="counter__label">континента делят город —<br />кошки не заметили границы</span>
+          <span class="counter__label">континента делят город — кошки границы не заметили</span>
         </div>
         <div class="counter reveal">
+          <span class="counter__idx">04</span>
           <span class="counter__value" data-count="5199">0</span>
-          <span class="counter__label">статья закона,<br />защищающего котов</span>
+          <span class="counter__label">статья закона, который котов защищает</span>
         </div>
       </div>
     </section>
@@ -227,7 +274,7 @@
     <!-- ================= BREEDS ================= -->
     <section class="section breeds" id="breeds">
       <div class="section__head reveal">
-        <p class="kicker">Глава 02 — Генеалогия квартала</p>
+        <p class="kicker"><svg class="kicker__ico" viewBox="0 0 24 24"><use href="#i-spark"/></svg>Глава 02 — Генеалогия квартала</p>
         <h2>Кто здесь<br /><em>живёт</em></h2>
         <p class="section__lead">Породистых — меньшинство, но какие! И всё же настоящий герой Стамбула — беспородный текир, отшлифованный улицей до совершенства.</p>
       </div>
@@ -292,7 +339,7 @@
     <!-- ================= CULT ================= -->
     <section class="section cult" id="cult">
       <div class="section__head reveal">
-        <p class="kicker">Глава 03 — Религия города</p>
+        <p class="kicker"><svg class="kicker__ico" viewBox="0 0 24 24"><use href="#i-spark"/></svg>Глава 03 — Религия города</p>
         <h2>Культ<br /><em>кошек</em></h2>
         <p class="section__lead">Здесь кормят котов раньше, чем кормят себя. Это не благотворительность — это часть ритуала.</p>
       </div>
@@ -329,7 +376,7 @@
     <!-- ================= LEGENDS ================= -->
     <section class="section legends" id="legends">
       <div class="section__head reveal">
-        <p class="kicker">Глава 04 — Пантеон</p>
+        <p class="kicker"><svg class="kicker__ico" viewBox="0 0 24 24"><use href="#i-spark"/></svg>Глава 04 — Пантеон</p>
         <h2>Легендарные<br /><em>коты</em></h2>
         <p class="section__lead">У каждого района — свой святой. Троим поставили памятники, одному — страницу в Википедии, а тысячи — просто живут.</p>
       </div>
@@ -376,7 +423,7 @@
     <!-- ================= PLACES ================= -->
     <section class="section places" id="places">
       <div class="section__head reveal">
-        <p class="kicker">Глава 05 — Карта мурлыканья</p>
+        <p class="kicker"><svg class="kicker__ico" viewBox="0 0 24 24"><use href="#i-spark"/></svg>Глава 05 — Карта мурлыканья</p>
         <h2>Где их<br /><em>встретить</em></h2>
         <p class="section__lead">Кошку в Стамбуле можно не искать — она сама тебя найдёт. Но если нужна гарантия, вот шесть мест с максимальной плотностью пушистой власти. Листай вбок →</p>
       </div>
@@ -447,27 +494,35 @@
 
     <!-- ================= FINALE / FOOTER ================= -->
     <footer class="finale" id="finale">
-      <div class="finale__cat" aria-hidden="true">
-        <svg viewBox="0 0 340 150">
-          <g class="walk-cat">
-            <path class="walk-cat__tail" d="M56 84 Q22 74 18 42 Q16 30 30 26"/>
-            <path class="walk-cat__body" d="M42 118 Q34 94 58 82 Q86 68 132 66 Q192 68 224 80 Q250 92 254 110 Q256 122 244 124 L60 124 Q46 124 42 118 Z"/>
-            <path class="walk-cat__leg walk-cat__leg--1" d="M74 116 L62 138"/>
-            <path class="walk-cat__leg walk-cat__leg--2" d="M100 120 L104 140"/>
-            <path class="walk-cat__leg walk-cat__leg--3" d="M216 118 L206 138"/>
-            <path class="walk-cat__leg walk-cat__leg--4" d="M238 112 L250 134"/>
-            <g class="walk-cat__head">
-              <path class="walk-cat__headbase" d="M256 92 Q252 46 282 42 Q310 46 308 84 Q306 106 280 108 Q258 106 256 92 Z"/>
-              <path class="walk-cat__ear walk-cat__ear--b" d="M268 54 L260 26 L286 46 Z"/>
-              <path class="walk-cat__ear walk-cat__ear--f" d="M296 52 L314 26 L306 66 Z"/>
-            </g>
-            <path class="walk-cat__nose" d="M306 82 L314 84 L306 90 Z"/>
-          </g>
-        </svg>
+      <div class="finale__sky" aria-hidden="true">
+        <svg class="finale__moon" viewBox="0 0 100 100"><path d="M81.3 22 A42 42 0 1 0 81.3 78 A34 34 0 1 1 81.3 22 Z"/></svg>
+        <svg class="finale__spark finale__spark--1" viewBox="0 0 24 24"><use href="#i-spark"/></svg>
+        <svg class="finale__spark finale__spark--2" viewBox="0 0 24 24"><use href="#i-spark"/></svg>
+        <svg class="finale__spark finale__spark--3" viewBox="0 0 24 24"><use href="#i-spark"/></svg>
       </div>
       <h2 class="finale__title reveal">İstanbul kedi̇leri̇ndi̇r.</h2>
       <p class="finale__sub reveal">«Стамбул принадлежит кошкам». Мы здесь в гостях — веди себя прилично.</p>
-      <button class="btn btn--solid finale__meow reveal" data-meow>Сказать «miyav» ↑</button>
+      <button class="btn btn--solid finale__meow reveal" data-meow>Сказать «miyav» <svg class="btn__ico btn__ico--up" viewBox="0 0 24 24"><use href="#i-arrow"/></svg></button>
+      <div class="finale__cat" aria-hidden="true">
+        <svg viewBox="0 0 340 150">
+          <g class="walk-cat">
+            <path class="walk-cat__tail" d="M66 100 C 46 94, 36 78, 44 62 C 48 54, 58 52, 63 58"/>
+            <path class="walk-cat__leg walk-cat__leg--far1" d="M108 120 C 108 128, 106 135, 101 141"/>
+            <path class="walk-cat__leg walk-cat__leg--far2" d="M218 120 C 220 128, 224 135, 229 141"/>
+            <path class="walk-cat__body" d="M244 94 C 254 100, 258 112, 250 122 C 244 130, 228 134, 206 136 C 168 140, 116 138, 88 132 C 68 127, 58 116, 61 104 C 64 92, 78 85, 98 84 C 140 78, 196 78, 226 86 C 234 88, 240 90, 244 94 Z"/>
+            <g class="walk-cat__head">
+              <path class="walk-cat__ear walk-cat__ear--b" d="M266 72 Q261 57 271 51 Q279 60 279 71 Z"/>
+              <path class="walk-cat__ear walk-cat__ear--f" d="M284 71 Q288 56 297 53 Q299 66 292 75 Z"/>
+              <path class="walk-cat__headbase" d="M246 82 C 258 71, 277 67, 292 71 C 303 74, 309 83, 307 91 C 305 98, 296 102, 286 103 C 272 105, 258 102, 250 97 C 245 93, 243 87, 246 82 Z"/>
+              <circle class="walk-cat__eye" cx="289" cy="84" r="2.3"/>
+              <path class="walk-cat__nose" d="M305 87 l6 3 -7 3 Z"/>
+            </g>
+            <path class="walk-cat__leg walk-cat__leg--near1" d="M92 122 C 90 130, 86 136, 80 142"/>
+            <path class="walk-cat__leg walk-cat__leg--near2" d="M236 116 C 238 126, 243 133, 248 140"/>
+          </g>
+        </svg>
+      </div>
+      <div class="finale__ground" aria-hidden="true"></div>
       <div class="finale__meta reveal">
         <p>Сделано с любовью и мурлыканьем. Фото: Wikimedia Commons (CC BY-SA / свободные лицензии).</p>
         <p class="finale__tiny">kedi · miyav · İstanbul · кedi · miyav · İstanbul</p>

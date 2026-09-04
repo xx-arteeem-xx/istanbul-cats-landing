@@ -122,8 +122,7 @@ addEventListener("pointermove", (e) => {
   lastX = e.clientX;
 }, { passive: true });
 
-const PAW_SVG =
-  '<svg viewBox="0 0 100 100"><g fill="currentColor"><ellipse cx="50" cy="66" rx="20" ry="18"/><ellipse cx="20" cy="44" rx="9" ry="13" transform="rotate(-18 20 44)"/><ellipse cx="39" cy="30" rx="9" ry="13" transform="rotate(-6 39 30)"/><ellipse cx="61" cy="30" rx="9" ry="13" transform="rotate(6 61 30)"/><ellipse cx="80" cy="44" rx="9" ry="13" transform="rotate(18 80 44)"/></g></svg>';
+const PAW_SVG = '<svg viewBox="0 0 100 100"><use href="#i-paw"/></svg>';
 
 function stampPaw(x, y, alt) {
   if (isTouch || reduced) return;
